@@ -3,6 +3,7 @@
  */
 package ru.kipolad.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,6 +22,7 @@ public class WeatherPage extends BaseView {
     @FindBy(xpath = "//li[@class='city-dropdown city-select']//li//a")
     private List<WebElement> citiesList;
 
+    @Step("Выбрать город")
     public void chooseACity(String city) {
         webDriverWait.until
                 (ExpectedConditions.elementToBeClickable(citiesList.stream()
@@ -33,6 +35,7 @@ public class WeatherPage extends BaseView {
                 .perform();
     }
 
+    @Step("Клик на выпадающее меню 'Погода'")
     public void clickToWeatherMenu() {
         actions.moveToElement(weatherMenu)
                 .click()

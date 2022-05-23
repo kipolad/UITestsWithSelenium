@@ -4,17 +4,25 @@
 package kipolad.UItests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.kipolad.loggers.CustomLogger;
 import ru.kipolad.pages.MainPage;
 import ru.kipolad.pages.WeatherPage;
 
 import java.time.Duration;
 
+@Epic("Pogoda.sakh.com")
 public class WeatherInCitiesTests {
     WebDriver driver;
     WebDriverWait webDriverWait;
@@ -27,7 +35,7 @@ public class WeatherInCitiesTests {
 
     @BeforeEach
     void initDriver() {
-        driver = new ChromeDriver();
+        driver = new EventFiringDecorator(new CustomLogger()).decorate(new ChromeDriver());
         webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(5));
         actions = new Actions(driver);
         driver.get("https://sakh.com/");
@@ -36,39 +44,39 @@ public class WeatherInCitiesTests {
                 .clickToWeatherMenu();
     }
 
-    @Test
-    void checkWeatherInMoscowFromMainPage() {
-        new WeatherPage(driver).chooseACity("Москва");
+    @ParameterizedTest
+    @CsvSource({"Москва, msk",
+            "Южно-Сахалинск, ys",
+            "Александровск-С, aleksandrovsk",
+            "Анива, aniva",
+            "Долинск, dolinsk",
+            "Корсаков, korsakov",
+            "Курильск, kurilsk",
+            "Макаров, makarov",
+            "Невельск, nevelsk",
+            "Ноглики, nogliki",
+            "Оха, okha",
+            "Поронайск, poronaysk",
+            "Северо-Курильск, skurilsk",
+            "Смирных, smirnyh",
+            "Томари, tomari",
+            "Тымовское, tymovskoe",
+            "Углегорск, uglegorsk",
+            "Холмск, kholmsk",
+            "Южно-Курильск, ykurilsk",
+            "Хабаровск, khv"})
+    @Feature("Просмотр прогноза погоды по городам переходом с блока погоды на главной странице")
+    @Story("Просмотр страницы прогноза погоды через меню выбора городов")
+    void checkWeatherInMoscowFromMainPage(String city, String urlContainsCity) {
+        new WeatherPage(driver).chooseACity(city);
 
         Assertions.assertAll(
-                () -> Assertions.assertTrue(driver.getCurrentUrl().contains("msk"), "Url does not contain 'msk'"),
-                () -> Assertions.assertTrue(driver.findElement(By.xpath("//span[contains(., 'Москва')]")).isDisplayed(),
-                        "Moscow city is not displayed in the Weathers menu")
+                () -> Assertions.assertTrue(driver.getCurrentUrl().contains(urlContainsCity),
+                        "Url does not contain '" + urlContainsCity + "'"),
+                () -> Assertions.assertTrue(driver.findElement(By.xpath("//span[contains(., '" + city + "')]")).isDisplayed(),
+                        "The selected city is not displayed in the Weathers menu")
         );
     }
-
-    @Test
-    void checkWeatherInYuzhnoSakhalinskFromMainPage() {
-        new WeatherPage(driver).chooseACity("Южно-Сахалинск");
-
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(driver.getCurrentUrl().contains("ys"), "Url does not contain 'ys'"),
-                () -> Assertions.assertTrue(driver.findElement(By.xpath("//span[contains(., 'Южно-Сахалинск')]")).isDisplayed(),
-                        "Yuzhno-Sakhalinsk city is not displayed in the Weathers menu")
-        );
-    }
-
-    @Test
-    void checkWeatherInAnivaFromMainPage() {
-        new WeatherPage(driver).chooseACity("Анива");
-
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(driver.getCurrentUrl().contains("aniva"), "Url does not contain 'aniva'"),
-                () -> Assertions.assertTrue(driver.findElement(By.xpath("//span[contains(., 'Анива')]")).isDisplayed(),
-                        "Aniva city is not displayed in the Weathers menu")
-        );
-    }
-
 
     @AfterEach
     void tearDown() {
