@@ -1,7 +1,7 @@
 /**
  * Created by Yulya Telysheva
  */
-package kipolad.UItests;
+package kipolad.UItests.sakhcom;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Epic;
@@ -17,8 +17,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.kipolad.loggers.CustomLogger;
-import ru.kipolad.pages.MainPage;
-import ru.kipolad.pages.WeatherPage;
+import ru.kipolad.pages.sakhcom.MainPage;
+import ru.kipolad.pages.sakhcom.WeatherPage;
 
 import java.time.Duration;
 

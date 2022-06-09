@@ -1,7 +1,7 @@
 /**
  * Created by Yulya Telysheva
  */
-package ru.kipolad.pages;
+package ru.kipolad.pages.afisharu;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;

@@ -1,7 +1,7 @@
 /**
  * Created by Yulya Telysheva
  */
-package ru.kipolad.pages;
+package ru.kipolad.pages.sakhcom;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
